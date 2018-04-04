@@ -4,6 +4,7 @@
             <div class="row">
                 <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
                     <app-full-name v-model="userData.fullName"></app-full-name>
+                    {{userData.fullName}}
                     <div class="form-group">
                         <label>Email address</label>
                         <input v-model="userData.email" type="email" class="form-control" placeholder="email@yourdomain.com">

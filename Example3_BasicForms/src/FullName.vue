@@ -16,33 +16,35 @@
 <script>
     export default {
         props: ['value'],
-        computed: {
-            firstName() {
-                if (this.value.length)
-                    return this.value.split(' ')[0];
-                else
-                    return '';
+        computed:{
+            firstName(){
+                let value = (' ' + this.value).slice(1);
+                let [firstName,  ...lastName] = value.split(' ');
+                return firstName;
             },
-            lastName() {
-                if (this.value.length)
-                    return this.value.split(' ')[1];
-                else
-                    return '';
+            lastName(){
+                let value = (' ' + this.value).slice(1);
+                let [firstName,  ...lastName] = value.split(' ');
+                return lastName.join(' ');
+            }
+        },
+        data(){
+            return {
+                currentValue: '',
             }
         },
         methods: {
             nameChanged(isFirst, event) {
                 let name = '';
                 if (isFirst) {
-                    name = `${event.target.value} ${this.lastName}`
+                    name = [event.target.value, this.lastName].join(' ')
                 } else {
-                    name = `${this.firstName} ${event.target.value}`
+                    name = [this.firstName, event.target.value].join(' ')
                 }
-                this.value = name;
-                this.$emit("input", this.value);
+                this.currentValue = name;
+                this.$emit("input", this.currentValue);
             }
         }
-
     }
 </script>
 
