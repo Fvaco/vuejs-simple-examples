@@ -4,17 +4,10 @@
             <h3 class="panel-title text-center">{{ question }}</h3>
         </div>
         <div class="panel-body">
-            <div class="col-xs-12 col-sm-6 text-center">
-                <button class="btn btn-primary btn-lg" style="margin: 10px" @click="onAnswer(btnData[0].correct)">{{ btnData[0].answer }}</button>
-            </div>
-            <div class="col-xs-12 col-sm-6 text-center">
-                <button class="btn btn-primary btn-lg" style="margin: 10px" @click="onAnswer(btnData[1].correct)">{{ btnData[1].answer }}</button>
-            </div>
-            <div class="col-xs-12 col-sm-6 text-center">
-                <button class="btn btn-primary btn-lg" style="margin: 10px" @click="onAnswer(btnData[2].correct)">{{ btnData[2].answer }}</button>
-            </div>
-            <div class="col-xs-12 col-sm-6 text-center">
-                <button class="btn btn-primary btn-lg" style="margin: 10px" @click="onAnswer(btnData[3].correct)">{{ btnData[3].answer }}</button>
+            <div class="col-xs-12 col-sm-6 text-center" v-for="btn in btnData">
+                <button class="btn btn-primary btn-lg" style="margin: 10px" @click="onAnswer(btn.correct)">{{
+                    btn.answer }}
+                </button>
             </div>
         </div>
     </div>
@@ -25,7 +18,7 @@
 <script>
     const MODE_ADDITION = 1;
     const MODE_SUBTRACTION = 2;
-    export default{
+    export default {
         data() {
             return {
                 question: 'Oops, an error ocurred :/',
@@ -58,23 +51,21 @@
                         correctAnswer = 0;
                         this.question = 'Oops, an Error occurred :/';
                 }
-
-                this.btnData[0].answer = this.generateRandomNumber(correctAnswer - 10, correctAnswer + 10, correctAnswer);
-                this.btnData[0].correct = false;
-                this.btnData[1].answer = this.generateRandomNumber(correctAnswer - 10, correctAnswer + 10, correctAnswer);
-                this.btnData[1].correct = false;
-                this.btnData[2].answer = this.generateRandomNumber(correctAnswer - 10, correctAnswer + 10, correctAnswer);
-                this.btnData[2].correct = false;
-                this.btnData[3].answer = this.generateRandomNumber(correctAnswer - 10, correctAnswer + 10, correctAnswer);
-                this.btnData[3].correct = false;
+                this.btnData = this.btnData.map(() => {
+                    return {
+                        answer: this.generateRandomNumber(correctAnswer - 10, correctAnswer + 10, correctAnswer),
+                        correct: false
+                    }
+                });
 
                 const correctButton = this.generateRandomNumber(0, 3);
-                this.btnData[correctButton].correct = true;
-                this.btnData[correctButton].answer = correctAnswer;
+                this.btnData[correctButton] = {
+                    correct: true,
+                    answer: correctAnswer
+                }
             },
             generateRandomNumber(min, max, except) {
                 const rndNumber = Math.round(Math.random() * (max - min)) + min;
-                console.log(min, max, rndNumber);
                 if (rndNumber === except) {
                     return this.generateRandomNumber(min, max, except);
                 }
